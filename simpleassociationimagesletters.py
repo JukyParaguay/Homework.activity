@@ -163,18 +163,17 @@ class SimpleAssociationImagesLetters():
 		if self.lastImageSelected != -1 and self.imagesSelectionState[self.lastImageSelected]['selected'] == -1:
 			# No se ha asociado nada, volvemos a a poner a blanco el bg colour
 			lastImageEvenBoxSelected = allImagesFrames[self.lastImageSelected].get_children()[0]
+			self.changeBackgroundColour(lastImageEvenBoxSelected, 'white')
+			self.setSelectionStateColour(self.imagesSelectionState, indexImageSelected, None)
 			
-			lastImageEvenBoxSelected.modify_bg(gtk.STATE_NORMAL, lastImageEvenBoxSelected.get_colormap().alloc_color('white'))
-			self.imagesSelectionState[indexImageSelected]['colour'] = None
 			
 		# Revisamos si ya existe una asociacion'''
 		if self.imagesSelectionState[indexImageSelected]['selected'] == -1:
 			# Aun no existe una asociación
-			#print "Aun no existe una asociación"
 			colorAvailable = self.getAvailableSelectionColour()
-			imageEventBox.modify_bg(gtk.STATE_NORMAL, imageEventBox.get_colormap().alloc_color(colorAvailable['colour']))
-			self.imagesSelectionState[indexImageSelected]['colour'] = colorAvailable
-	
+			self.changeBackgroundColour(imageEventBox, colorAvailable['colour'])
+			self.setSelectionStateColour(self.imagesSelectionState, indexImageSelected, colorAvailable)
+			
 		#cambiamos los colores de los bordes (frames) para notificar la seleccion
 		self.fakeSelection(frameImageSelected)
 		lastFrameImageSelected = allImagesFrames[self.lastImageSelected]
@@ -183,10 +182,6 @@ class SimpleAssociationImagesLetters():
 		
 		#Comprabamos la finalización del ejercicio
 		self.checkCompletedExercise()
-			
-	
-		
-		
 			
 	def pairSelectedCallBack(self, pairEventBox, *args):
 
@@ -257,10 +252,10 @@ class SimpleAssociationImagesLetters():
 			self.imagesSelectionState[self.currentImageSelected]['selected'] = indexPairSelected
 			self.setUnavailableColour(colourImageSelected)	
 		else:
-			# No hay imagen seleccionada
-			colourAvailable =  self.getAvailableSelectionColour()
+			# TODO: No hay imagen seleccionada, re-ver!
+			'''colourAvailable =  self.getAvailableSelectionColour()
 			pairEventBox.modify_bg(gtk.STATE_NORMAL, pairEventBox.get_colormap().alloc_color(colourAvailable['colour']))
-			self.pairSelectionState[indexPairSelected]['colour'] = colourAvailable
+			self.pairSelectionState[indexPairSelected]['colour'] = colourAvailable'''
 			
 		#cambiamos los colores de los bordes (frames) para notificar la seleccion
 		self.fakeSelection(framePairSelected)
