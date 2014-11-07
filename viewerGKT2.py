@@ -50,7 +50,6 @@ class Viewer(gtk.Window):
 		self.set_title(self.activity.name)
 		self.set_default_size(1000,600)
 
-		'''self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(6400, 6400, 6440))'''
 		self.set_position(gtk.WIN_POS_CENTER)
 
 		self.toolbar = gtk.Toolbar()
@@ -87,23 +86,23 @@ class Viewer(gtk.Window):
 		self.amountExercises = len(self.activity.exercises)
 		self.currentIndexExercise = 0
 		
-		windowEjercicioInicial =  ejercicioInicial.getWindow(self.activity.exercises[self.currentIndexExercise], self)
-		vBoxGeneral.pack_start(windowEjercicioInicial, True, True, 0)
+		self.nextButtonCallBack(None, None)
 		
 		self.connect("destroy", gtk.main_quit)
 		self.show_all()
         
 	def nextButtonCallBack(self, button, *args):
-		print "nextButtonCallBack"
-		
-		newExercise = SimpleAssociationImagesLetters()
-		newWindowExercise = newExercise.getWindow(self.activity.exercises[self.currentIndexExercise], self)
-		
+		newExercise = None
+		newWindowExercise = None
+		if self.activity.exercises[self.currentIndexExercise].codeType == 1:
+			newExercise = SimpleAssociationImagesLetters()
+			newWindowExercise = newExercise.getWindow(self.activity.exercises[self.currentIndexExercise], self)
 		vBoxMain = self.get_children()[0]
-		oldWindowExercise = vBoxMain.get_children()[1]
-		vBoxMain.remove(oldWindowExercise)
+		if self.currentIndexExercise > 0 :
+			oldWindowExercise = vBoxMain.get_children()[1]
+			vBoxMain.remove(oldWindowExercise)
+			
 		vBoxMain.pack_start(newWindowExercise, True, True, 0)
-
 		self.show_all()
 
 Viewer()

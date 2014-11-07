@@ -15,98 +15,87 @@ class SimpleAssociationImagesLetters():
 	
 	def getWindow(self, exercise, mainWindows):
 		
-		'''Obtenemos el primer ejercicio y lo inicializamos'''
-		'''exercise = activity.exercises[0]'''
-		
-		'''  Deshabilitamos el boton --> '''
 		self.mainWindows = mainWindows
 		self.mainWindows.toolbar.get_nth_item(1).set_sensitive(False) 
-
-		'''Tipo 1: Asociacion Simple'''
-		if exercise.codeType == 1:
 			
+		windowInitialExercise = gtk.ScrolledWindow()
+		
+		
+		label = gtk.Label(exercise.name)
+		label.modify_font(pango.FontDescription("Sans 10"))
+		
+		frameExercises = gtk.Frame() 
+		frameExercises.set_label_widget(label)
+		frameExercises.set_label_align(0.5, 0)
+		
+		
+		
+		vBoxWindows = gtk.VBox(False, 5)
+		hBoxExercises = gtk.HBox(True, 50)
+		vBoxImages = gtk.VBox(False, 5)
+		vBoxOptionPairs = gtk.VBox(False, 5)
+		
+		frameExercises.add(hBoxExercises)
+		
+		'''Colores de seleccion'''
+		self.colours = []
+		self.colours.append({"colour":"orange", "available":True})
+		self.colours.append({"colour":"green", "available":True})
+		self.colours.append({"colour":"blue", "available":True})
+		
+		self.imagesSelectionState = {}
+		self.pairSelectionState = {}
+		
+		self.currentImageSelected = -1
+		self.lastImageSelected = -1
+		
+		self.currentPairSelected = -1
+		self.lastPairSelected = -1
+		
+		imagesList, pairsList = self.disorderPairs(exercise.images)
+		firstImageEventBox = None
+		for index,  image in enumerate(imagesList):
 			
-			
-			windowInitialExercise = gtk.ScrolledWindow()
-			
-			
-			label = gtk.Label(exercise.name)
-			label.modify_font(pango.FontDescription("Sans 10"))
-			
-			frameExercises = gtk.Frame() 
-			frameExercises.set_label_widget(label)
-			frameExercises.set_label_align(0.5, 0)
-			
-			
-			
-			vBoxWindows = gtk.VBox(False, 5)
-			hBoxExercises = gtk.HBox(True, 50)
-			vBoxImages = gtk.VBox(False, 5)
-			vBoxOptionPairs = gtk.VBox(False, 5)
-			
-			frameExercises.add(hBoxExercises)
-			
-			'''Colores de seleccion'''
-			self.colours = []
-			self.colours.append({"colour":"orange", "available":True})
-			self.colours.append({"colour":"green", "available":True})
-			self.colours.append({"colour":"blue", "available":True})
-			
-			self.imagesSelectionState = {}
-			self.pairSelectionState = {}
-			
-			self.currentImageSelected = -1
-			self.lastImageSelected = -1
-			
-			self.currentPairSelected = -1
-			self.lastPairSelected = -1
-			
-			imagesList, pairsList = self.disorderPairs(exercise.images)
-			firstImageEventBox = None
-			for index,  image in enumerate(imagesList):
+			frameEventBoxImage = gtk.Frame() 
+			eventBox = gtk.EventBox()
 				
-				frameEventBoxImage = gtk.Frame() 
-				eventBox = gtk.EventBox()
-					
-				if index == 0:
-					firstImageEventBox = eventBox
-				
-				imageContainer =  gtk.Image()
-				imageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file(image['imagePath']).scale_simple(180, 170, 2))
-				eventBox.add(imageContainer)
-				eventBox.connect("button-press-event", self.imageSelectedCallBack)
-				eventBox.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color('white'))
-				frameEventBoxImage.add(eventBox)
-				vBoxImages.pack_start(frameEventBoxImage, False,False,0)
-				
-				self.imagesSelectionState[index] = {"selected": -1, "pair": image['indexPair'], "colour": None}
-				
-				
-				'''Pairs'''
-				frameEventPair = gtk.Frame() 
-				eventBoxPair = gtk.EventBox()
-				pair = gtk.Label(pairsList[index]['optionPair'])
-				pair.modify_font(pango.FontDescription("Courier Bold 80"))
-				eventBoxPair.add(pair)
-				eventBoxPair.connect("button_press_event", self.pairSelectedCallBack, vBoxImages)
-				eventBoxPair.set_size_request(180, 170)
-				eventBoxPair.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color('white'))
-				frameEventPair.add(eventBoxPair)
-				vBoxOptionPairs.pack_start(frameEventPair, False,False,0)
-				
-				self.pairSelectionState[index] = {"selected": -1, "pair": pairsList[index]['indexPair'], "colour": None}	
-				
+			if index == 0:
+				firstImageEventBox = eventBox
+			
+			imageContainer =  gtk.Image()
+			imageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file(image['imagePath']).scale_simple(180, 170, 2))
+			eventBox.add(imageContainer)
+			eventBox.connect("button-press-event", self.imageSelectedCallBack, vBoxOptionPairs)
+			eventBox.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color('white'))
+			frameEventBoxImage.add(eventBox)
+			vBoxImages.pack_start(frameEventBoxImage, False,False,0)
+			
+			self.imagesSelectionState[index] = {"selected": -1, "pair": image['indexPair'], "colour": None}
 			
 			
-				
-			hBoxExercises.pack_start(vBoxImages, False,True,50)
-			hBoxExercises.pack_start(vBoxOptionPairs, False,True,50)
-			vBoxWindows.pack_start(frameExercises, False,False,0)
+			'''Pairs'''
+			frameEventPair = gtk.Frame() 
+			eventBoxPair = gtk.EventBox()
+			pair = gtk.Label(pairsList[index]['optionPair'])
+			pair.modify_font(pango.FontDescription("Courier Bold 80"))
+			eventBoxPair.add(pair)
+			eventBoxPair.connect("button_press_event", self.pairSelectedCallBack, vBoxImages)
+			eventBoxPair.set_size_request(180, 170)
+			eventBoxPair.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color('white'))
+			frameEventPair.add(eventBoxPair)
+			vBoxOptionPairs.pack_start(frameEventPair, False,False,0)
 			
-			windowInitialExercise.add_with_viewport(vBoxWindows)
+			self.pairSelectionState[index] = {"selected": -1, "pair": pairsList[index]['indexPair'], "colour": None}	
 			
-			self.selectFirtImage(firstImageEventBox)
 			
+		hBoxExercises.pack_start(vBoxImages, False,True,50)
+		hBoxExercises.pack_start(vBoxOptionPairs, False,True,50)
+		vBoxWindows.pack_start(frameExercises, False,False,0)
+		
+		windowInitialExercise.add_with_viewport(vBoxWindows)
+		
+		self.selectFirtImage(firstImageEventBox)
+		
 		return windowInitialExercise
 	
 	def selectFirtImage(self, firstEvenBox):
@@ -115,7 +104,7 @@ class SimpleAssociationImagesLetters():
 		self.setSelectionStateColour(self.imagesSelectionState, 0, availableColour)
 		self.currentImageSelected = 0
 		frameImageSelected = firstEvenBox.get_parent()
-		frameImageSelected.modify_bg(gtk.STATE_NORMAL, frameImageSelected.get_colormap().alloc_color('black'))
+		self.fakeSelection(frameImageSelected)
 		
 	def disorderPairs(self, pairList):
 		
@@ -133,15 +122,11 @@ class SimpleAssociationImagesLetters():
 	
 	def checkCompletedExercise(self):
 		result = True
-		
 		for key,imageSelectionState in self.imagesSelectionState.items():
 			if (imageSelectionState['selected'] != imageSelectionState['pair']) or (self.pairSelectionState[key]['selected'] != self.pairSelectionState[key]['pair']) :
 				result = False
 				break
-		
 		if result:
-			print self.imagesSelectionState
-			print self.pairSelectionState
 			self.mainWindows.exerciseCompletedCallBack()
 	
 
@@ -168,6 +153,12 @@ class SimpleAssociationImagesLetters():
 		self.lastImageSelected = self.currentImageSelected
 		self.currentImageSelected = indexImageSelected
 		
+		vBoxPairs = args[1]
+		'''Se des-selecciona el par selecciondo previamente'''
+		if self.currentPairSelected != -1:
+			framePairSelected = vBoxPairs.get_children()[self.currentPairSelected]
+			self.fakeUnselection(framePairSelected)
+		
 		# Revisamos si la ultima imagen seleccionada no fue asociada
 		if self.lastImageSelected != -1 and self.imagesSelectionState[self.lastImageSelected]['selected'] == -1:
 			# No se ha asociado nada, volvemos a a poner a blanco el bg colour
@@ -185,10 +176,11 @@ class SimpleAssociationImagesLetters():
 			self.imagesSelectionState[indexImageSelected]['colour'] = colorAvailable
 	
 		#cambiamos los colores de los bordes (frames) para notificar la seleccion
-		frameImageSelected.modify_bg(gtk.STATE_NORMAL, frameImageSelected.get_colormap().alloc_color('black'))
+		self.fakeSelection(frameImageSelected)
 		lastFrameImageSelected = allImagesFrames[self.lastImageSelected]
-		lastFrameImageSelected.modify_bg(gtk.STATE_NORMAL, frameImageSelected.get_colormap().alloc_color('white'))
-	
+		self.fakeUnselection(lastFrameImageSelected)
+		self.fakeUnselection
+		
 		#Comprabamos la finalización del ejercicio
 		self.checkCompletedExercise()
 			
@@ -271,13 +263,18 @@ class SimpleAssociationImagesLetters():
 			self.pairSelectionState[indexPairSelected]['colour'] = colourAvailable
 			
 		#cambiamos los colores de los bordes (frames) para notificar la seleccion
-		framePairSelected.modify_bg(gtk.STATE_NORMAL, framePairSelected.get_colormap().alloc_color('black'))
+		self.fakeSelection(framePairSelected)
 		lastFramePairSelected = allPairFrames[self.lastPairSelected]
-		lastFramePairSelected.modify_bg(gtk.STATE_NORMAL, lastFramePairSelected.get_colormap().alloc_color('white'))
+		self.fakeUnselection(lastFramePairSelected)
 		
 		#Comprabamos la finalización del ejercicio
 		self.checkCompletedExercise()
-		
+	
+	def fakeSelection(self, frame):
+		frame.modify_bg(gtk.STATE_NORMAL, frame.get_colormap().alloc_color('black'))
+	
+	def fakeUnselection(self, frame)	:
+		frame.modify_bg(gtk.STATE_NORMAL, frame.get_colormap().alloc_color('white'))
 	
 	def changeBackgroundColour(self, eventBox, colour):
 		eventBox.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color(colour))
