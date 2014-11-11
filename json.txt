@@ -1,7 +1,25 @@
 {
   "name": "Actividad para Juan Perez",
   "exercises": [
-     {
+    {
+      "codeType": 2,
+      "name": "Encuentra el Diferente",
+      "items": [
+        {
+          "letter": "a",
+          "differentLetter": "p"
+        },
+        {
+          "letter": "b",
+          "differentLetter": "c"
+        },
+        {
+          "letter": "c",
+          "differentLetter": "e"
+        }
+      ]
+    },
+    {
       "codeType": 1,
       "name": "Asociación Simple",
       "images": [
@@ -16,24 +34,6 @@
         {
           "imagePath": "./images/bag.png",
           "optionPair": "M"
-        }
-      ]
-    },
-    {
-      "codeType": 2,
-      "name": "Encuentra el Diferente",
-      "items": [
-        {
-          "letter": "a",
-          "differentLetter": "P"
-        },
-        {
-          "letter": "b",
-          "differentLetter": "c"
-        },
-        {
-          "letter": "c",
-          "differentLetter": "e"
         }
       ]
     },
