@@ -17,7 +17,7 @@ class Viewer(gtk.Window):
 			
 			md = gtk.MessageDialog(self, 
             gtk.DIALOG_MODAL, gtk.MESSAGE_INFO, 
-            gtk.BUTTONS_CLOSE, "¡ Asociación Correcta !")
+            gtk.BUTTONS_CLOSE, "¡ Correcto !")
 			md.run()
 			md.destroy()
 			

@@ -77,7 +77,7 @@ class FindTheDifferent():
 			
 			count = 0
 			until = 3
-			different = 2
+			different = random.randint(0,until)
 			self.selectionsState[index] = {"selectedIndex": -1,"differentInex":different}
 			while count <= until:
 				eventBox = gtk.EventBox()

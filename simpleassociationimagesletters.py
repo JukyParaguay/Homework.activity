@@ -77,10 +77,8 @@ class SimpleAssociationImagesLetters():
 			frameEventPair = gtk.Frame() 
 			eventBoxPair = gtk.EventBox()
 			pair = gtk.Label(pairsList[index]['optionPair'])
-			pair.modify_font(pango.FontDescription("Courier Bold 80"))
-			eventBoxPair.add(pair)
+			self.createEventBoxPair(frameEventPair, eventBoxPair, pair, exercise.codSubType)
 			eventBoxPair.connect("button_press_event", self.pairSelectedCallBack, vBoxImages)
-			eventBoxPair.set_size_request(180, 170)
 			eventBoxPair.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color('white'))
 			frameEventPair.add(eventBoxPair)
 			vBoxOptionPairs.pack_start(frameEventPair, False,False,0)
@@ -98,6 +96,16 @@ class SimpleAssociationImagesLetters():
 		
 		return windowInitialExercise
 	
+	def createEventBoxPair(self, frame, eventBox, label, codSubType):
+		if codSubType == 1:
+			label.modify_font(pango.FontDescription("Courier Bold 80"))
+		elif codSubType == 2:
+			label.modify_font(pango.FontDescription("Courier Bold 50"))
+		eventBox.set_size_request(180, 170)
+		
+		eventBox.add(label)
+		
+		return eventBox
 	def selectFirtImage(self, firstEvenBox):
 		availableColour =  self.getAvailableSelectionColour()
 		self.changeBackgroundColour(firstEvenBox, availableColour['colour'])

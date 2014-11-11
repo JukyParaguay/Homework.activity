@@ -21,6 +21,7 @@
     },
     {
       "codeType": 1,
+      "codSubType":1, 
       "name": "Asociación Simple",
       "images": [
         {
@@ -39,19 +40,20 @@
     },
     {
       "codeType": 1,
+      "codSubType":2, 	
       "name": "Asociación Simple",
       "images": [
         {
           "imagePath": "./images/pelota.png",
-          "optionPair": "P"
+          "optionPair": "Pelota"
         },
         {
           "imagePath": "./images/notebook.png",
-          "optionPair": "C"
+          "optionPair": "Cuaderno"
         },
         {
           "imagePath": "./images/bag.png",
-          "optionPair": "M"
+          "optionPair": "Mochila"
         }
       ]
     }
