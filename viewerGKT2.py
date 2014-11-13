@@ -11,6 +11,7 @@ import pango
 
 from simpleassociationimagesletters import SimpleAssociationImagesLetters
 from findthedifferent import FindTheDifferent
+from searchthesame import SearchTheSame
 
 class Viewer(gtk.Window):
 	def exerciseCompletedCallBack(self):
@@ -100,7 +101,10 @@ class Viewer(gtk.Window):
 		elif self.activity.exercises[self.currentIndexExercise].codeType == 2:
 			newExercise = FindTheDifferent()
 			newWindowExercise = newExercise.getWindow(self.activity.exercises[self.currentIndexExercise], self)
-		
+		elif self.activity.exercises[self.currentIndexExercise].codeType == 3:
+			newExercise = SearchTheSame()
+			newWindowExercise = newExercise.getWindow(self.activity.exercises[self.currentIndexExercise], self)
+			
 		vBoxMain = self.get_children()[0]
 		if self.currentIndexExercise > 0 :
 			oldWindowExercise = vBoxMain.get_children()[1]
