@@ -2,6 +2,43 @@
   "name": "Actividad para Juan Perez",
   "exercises": [
      {
+      "codeType": 1,
+      "codSubType":1, 
+      "name": "Asociación Simple",
+      "images": [
+        {
+          "imagePath": "./images/pelota.png",
+          "optionPair": "P"
+        },
+        {
+          "imagePath": "./images/notebook.png",
+          "optionPair": "C"
+        },
+        {
+          "imagePath": "./images/bag.png",
+          "optionPair": "M"
+        }
+      ]
+     },
+     {
+      "codeType": 2,
+      "name": "Encuentra el Diferente",
+      "items": [
+        {
+          "letter": "a",
+          "differentLetter": "p"
+        },
+        {
+          "letter": "b",
+          "differentLetter": "c"
+        },
+        {
+          "letter": "c",
+          "differentLetter": "e"
+        }
+      ]
+     },
+     {
       "codeType": 3,
       "name": "Busca los Iguales",
       "items": [
@@ -23,48 +60,11 @@
         {
           "letter": "f"
         },
-        {
+         {
           "letter": "g"
         },
-        {
+         {
           "letter": "h"
-        }
-      ]
-    },
-    {
-      "codeType": 2,
-      "name": "Encuentra el Diferente",
-      "items": [
-        {
-          "letter": "a",
-          "differentLetter": "p"
-        },
-        {
-          "letter": "b",
-          "differentLetter": "c"
-        },
-        {
-          "letter": "c",
-          "differentLetter": "e"
-        }
-      ]
-    },
-    {
-      "codeType": 1,
-      "codSubType":1, 
-      "name": "Asociación Simple",
-      "images": [
-        {
-          "imagePath": "./images/pelota.png",
-          "optionPair": "P"
-        },
-        {
-          "imagePath": "./images/notebook.png",
-          "optionPair": "C"
-        },
-        {
-          "imagePath": "./images/bag.png",
-          "optionPair": "M"
         }
       ]
     },

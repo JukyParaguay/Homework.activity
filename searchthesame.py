@@ -50,8 +50,6 @@ class SearchTheSame():
 			
 			rowsCount = rowsCount + 1
 		
-		#print storeSelectionState
-		
 		return storeSelectionState
 	
 	def fakeSelection(self, eventBox):
@@ -61,8 +59,6 @@ class SearchTheSame():
 		eventBox.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color('white'))
 	
 	def cellSelectedCallBack(self, eventBox, *args):
-		
-		print "cellSelectedCallBack"
 		
 		vBox = eventBox.get_parent()
 		rowIndex = vBox.child_get_property(eventBox, "position")
@@ -103,18 +99,24 @@ class SearchTheSame():
 		self.mainWindows = mainWindows
 		self.mainWindows.toolbar.get_nth_item(1).set_sensitive(False) 
 			
-		windowFindTheDifferent = gtk.ScrolledWindow()
+		windowSearchTheSame= gtk.ScrolledWindow()
 		
+		eventBoxLabel = gtk.EventBox()
 		label = gtk.Label(exercise.name)
-		label.modify_font(pango.FontDescription("Sans 10"))
+		label.modify_font(pango.FontDescription(" 14"))
+		eventBoxLabel.add(label)
+		eventBoxLabel.modify_bg(gtk.STATE_NORMAL, eventBoxLabel.get_colormap().alloc_color("light blue"))
+		
 		
 		frameExercises = gtk.Frame() 
-		frameExercises.set_label_widget(label)
-		frameExercises.set_label_align(0.5, 0)
 		
 		
-		vBoxWindows = gtk.VBox(False, 5)
+		vBoxWindows = gtk.VBox(False, 10)
 		vBoxExercises = gtk.VBox(True, 10)
+		
+		hBoxTitle = gtk.HBox(True, 0)
+		hBoxTitle.pack_start(eventBoxLabel, True,True,0)
+		vBoxWindows.pack_start(hBoxTitle, True,True,0)
 		
 		frameExercises.add(vBoxExercises)
 		
@@ -148,8 +150,7 @@ class SearchTheSame():
 		
 		vBoxExercises.pack_start(hBox, False,False,0)
 		vBoxWindows.pack_start(frameExercises, False,False,0)
-		windowFindTheDifferent.add_with_viewport(vBoxWindows)
+		windowSearchTheSame.add_with_viewport(vBoxWindows)
 		
-		return windowFindTheDifferent
-		
+		return windowSearchTheSame
 		

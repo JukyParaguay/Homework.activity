@@ -24,9 +24,7 @@ class SimpleAssociationImagesLetters():
 		label = gtk.Label(exercise.name)
 		label.modify_font(pango.FontDescription("Sans 10"))
 		
-		frameExercises = gtk.Frame() 
-		frameExercises.set_label_widget(label)
-		frameExercises.set_label_align(0.5, 0)
+		
 		
 		
 		
@@ -34,6 +32,17 @@ class SimpleAssociationImagesLetters():
 		hBoxExercises = gtk.HBox(True, 50)
 		vBoxImages = gtk.VBox(False, 5)
 		vBoxOptionPairs = gtk.VBox(False, 5)
+		
+		frameExercises = gtk.Frame() 
+		
+		eventBoxLabel = gtk.EventBox()
+		label = gtk.Label(exercise.name)
+		label.modify_font(pango.FontDescription(" 14"))
+		eventBoxLabel.add(label)
+		eventBoxLabel.modify_bg(gtk.STATE_NORMAL, eventBoxLabel.get_colormap().alloc_color("light blue"))
+		hBoxTitle = gtk.HBox(True, 0)
+		hBoxTitle.pack_start(eventBoxLabel, True,True,0)
+		vBoxWindows.pack_start(hBoxTitle, False,False,0)
 		
 		frameExercises.add(hBoxExercises)
 		
@@ -169,10 +178,11 @@ class SimpleAssociationImagesLetters():
 		
 		# Revisamos si la ultima imagen seleccionada no fue asociada
 		if self.lastImageSelected != -1 and self.imagesSelectionState[self.lastImageSelected]['selected'] == -1:
+			
 			# No se ha asociado nada, volvemos a a poner a blanco el bg colour
 			lastImageEvenBoxSelected = allImagesFrames[self.lastImageSelected].get_children()[0]
 			self.changeBackgroundColour(lastImageEvenBoxSelected, 'white')
-			self.setSelectionStateColour(self.imagesSelectionState, indexImageSelected, None)
+			self.setSelectionStateColour(self.imagesSelectionState, self.lastImageSelected, None)
 			
 			
 		# Revisamos si ya existe una asociacion'''
