@@ -32,16 +32,24 @@
       "name": "Encuentra el Diferente",
       "items": [
         {
-          "letter": "a",
-          "differentLetter": "p"
+          "equal": {"type":"letter", "value":"a"},
+          "different": {"type":"letter", "value":"p"}
         },
         {
-          "letter": "b",
-          "differentLetter": "c"
+          "equal": {"type":"letter", "value":"b"},
+          "different": {"type":"letter", "value":"c"}
         },
         {
-          "letter": "c",
-          "differentLetter": "e"
+          "equal": {"type":"letter", "value":"c"},
+          "different": {"type":"letter", "value":"e"}
+        },
+        {
+          "equal": {"type":"letter", "value":"d"},
+          "different": {"type":"letter", "value":"i"}
+        },
+        {
+          "equal": {"type":"letter", "value":"e"},
+          "different": {"type":"letter", "value":"f"}
         }
       ]
      },

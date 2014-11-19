@@ -26,9 +26,9 @@ class FindTheDifferent():
 	
 		if checkFlag:
 			self.mainWindows.exerciseCompletedCallBack()
+			
 		
-		
-	def letterSelectedCallBack(self,eventBox, *args):
+	def selectionCallBack(self,eventBox, *args):
 		
 		hVox = args[1]
 		vBoxExercises = args[2]
@@ -46,24 +46,31 @@ class FindTheDifferent():
 		
 		self.checkCompletedExercise();
 	
+	def createEventBox(self, itemElement):
+		eventBox = gtk.EventBox()
+		
+		if itemElement.type == "letter":
+			label = gtk.Label(itemElement.value)
+			label.modify_font(pango.FontDescription("Courier Bold 50"))
+			eventBox.add(label)
+			
+		return eventBox
+		
 	def getWindow(self, exercise, mainWindows):
 		
 		self.mainWindows = mainWindows
-		self.mainWindows.toolbar.get_nth_item(1).set_sensitive(False) 
 			
 		windowFindTheDifferent = gtk.ScrolledWindow()
-		
-		
 		
 		frameExercises = gtk.Frame() 
 		
 		vBoxWindows = gtk.VBox(False, 5)
-		vBoxExercises = gtk.VBox(True, 10)
+		vBoxExercises = gtk.VBox(False, 5)
 		
 		frameExercises.add(vBoxExercises)
 		
 		items = exercise.items
-		self.selectionsState = [None]*3
+		self.selectionsState = [None]*len(items)
 		for index, item in enumerate(items):
 			
 			frame = gtk.Frame()
@@ -76,18 +83,21 @@ class FindTheDifferent():
 			different = random.randint(0,until)
 			self.selectionsState[index] = {"selectedIndex": -1,"differentInex":different}
 			while count <= until:
+				
 				eventBox = gtk.EventBox()
-				letterLabel = gtk.Label(item.letter)
 				if count == different:
-					letterLabel = gtk.Label(item.differentLetter)
-				letterLabel.modify_font(pango.FontDescription("Courier Bold 60"))
-				eventBox.add(letterLabel)
+					eventBox = self.createEventBox(item.different)
+				else:
+					eventBox = self.createEventBox(item.equal)
+					
 				self.changeBackgroundColour(eventBox, 'white')
-				eventBox.connect("button-press-event", self.letterSelectedCallBack, hVox, vBoxExercises, frame)
+				eventBox.connect("button-press-event", self.selectionCallBack, hVox, vBoxExercises, frame)
 				hVox.pack_start(eventBox, False,True,0)
 				count = count + 1
-				
-			vBoxExercises.pack_start(frame, False,True,30)
+			
+			
+			frame.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color("orange"))
+			vBoxExercises.pack_start(frame, False,True,10)
 		
 		
 		vBoxWindows.pack_start(frameExercises, False,False,0)
