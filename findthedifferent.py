@@ -62,16 +62,6 @@ class FindTheDifferent():
 		
 		frameExercises.add(vBoxExercises)
 		
-		eventBoxLabel = gtk.EventBox()
-		label = gtk.Label(exercise.name)
-		label.modify_font(pango.FontDescription(" 14"))
-		eventBoxLabel.add(label)
-		eventBoxLabel.modify_bg(gtk.STATE_NORMAL, eventBoxLabel.get_colormap().alloc_color("light blue"))
-		hBoxTitle = gtk.HBox(True, 0)
-		hBoxTitle.pack_start(eventBoxLabel, True,True,0)
-		vBoxWindows.pack_start(hBoxTitle, False,False,0)
-		
-		
 		items = exercise.items
 		self.selectionsState = [None]*3
 		for index, item in enumerate(items):

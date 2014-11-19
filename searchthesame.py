@@ -101,29 +101,18 @@ class SearchTheSame():
 			
 		windowSearchTheSame= gtk.ScrolledWindow()
 		
-		eventBoxLabel = gtk.EventBox()
-		label = gtk.Label(exercise.name)
-		label.modify_font(pango.FontDescription(" 14"))
-		eventBoxLabel.add(label)
-		eventBoxLabel.modify_bg(gtk.STATE_NORMAL, eventBoxLabel.get_colormap().alloc_color("light blue"))
-		
-		
 		frameExercises = gtk.Frame() 
 		
 		
 		vBoxWindows = gtk.VBox(False, 10)
 		vBoxExercises = gtk.VBox(True, 10)
 		
-		hBoxTitle = gtk.HBox(True, 0)
-		hBoxTitle.pack_start(eventBoxLabel, True,True,0)
-		vBoxWindows.pack_start(hBoxTitle, True,True,0)
 		
 		frameExercises.add(vBoxExercises)
 		
 		items = exercise.items
 		
 		hBox = gtk.HBox(True, 0)
-		
 		columns = 4
 		rows = 4
 		
