@@ -2,21 +2,28 @@
   "name": "Actividad para Juan Perez",
   "exercises": [
      {
-      "codeType": 1,
-      "codSubType":1, 
+      "codeType": 1, 
       "name": "Asociación Simple",
-      "images": [
+      "items": [
         {
-          "imagePath": "./images/pelota.png",
-          "optionPair": "P"
+          "option": {"type":"image", "value":"./images/pelota.png"},
+          "correspondence": {"type":"letter", "value":"P"}
         },
         {
-          "imagePath": "./images/notebook.png",
-          "optionPair": "C"
+	  "option": {"type":"image", "value":"./images/notebook.png"},
+          "correspondence": {"type":"letter", "value":"C"}	
         },
         {
-          "imagePath": "./images/bag.png",
-          "optionPair": "M"
+          "option": {"type":"image", "value":"./images/bag.png"},
+          "correspondence": {"type":"letter", "value":"M"}
+        },
+        {
+          "option": {"type":"image", "value":"./images/arbol.png"},
+          "correspondence": {"type":"letter", "value":"A"}
+        },
+        {
+          "option": {"type":"image", "value":"./images/banana.png"},
+          "correspondence": {"type":"letter", "value":"B"}
         }
       ]
      },
@@ -70,20 +77,27 @@
     },
     {
       "codeType": 1,
-      "codSubType":2, 	
       "name": "Asociación Simple",
-      "images": [
+      "items": [
         {
-          "imagePath": "./images/pelota.png",
-          "optionPair": "Pelota"
+          "option": {"type":"image", "value":"./images/pelota.png"},
+          "correspondence": {"type":"word", "value":"Pelota"}
         },
         {
-          "imagePath": "./images/notebook.png",
-          "optionPair": "Cuaderno"
+	  "option": {"type":"image", "value":"./images/notebook.png"},
+          "correspondence": {"type":"word", "value":"Cuaderno"}	
         },
         {
-          "imagePath": "./images/bag.png",
-          "optionPair": "Mochila"
+          "option": {"type":"image", "value":"./images/bag.png"},
+          "correspondence": {"type":"word", "value":"Mochila"}
+        },
+        {
+          "option": {"type":"image", "value":"./images/arbol.png"},
+          "correspondence": {"type":"word", "value":"Arbol"}
+        },
+        {
+          "option": {"type":"image", "value":"./images/banana.png"},
+          "correspondence": {"type":"word", "value":"Banana"}
         }
       ]
     }
