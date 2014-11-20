@@ -22,7 +22,7 @@ class ModalWindowDone:
 		self.parent = parent
 		self.modalWindow = gtk.Window ()
 
-		# Disable interaction with parent
+		'''Disable interaction with parent'''
 		self.modalWindow.set_modal (True)
 
 		# Tell WM this is a dialog
