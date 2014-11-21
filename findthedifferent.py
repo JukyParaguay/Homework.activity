@@ -51,7 +51,7 @@ class FindTheDifferent():
 		
 		if itemElement.type == "letter":
 			label = gtk.Label(itemElement.value)
-			label.modify_font(pango.FontDescription("Courier Bold 50"))
+			label.modify_font(pango.FontDescription("Courier Bold 40"))
 			eventBox.add(label)
 			
 		return eventBox
@@ -97,13 +97,14 @@ class FindTheDifferent():
 			
 			
 			frame.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color("orange"))
-			vBoxExercises.pack_start(frame, False,True,10)
+			vBoxExercises.pack_start(frame, True,True,10)
 		
 		
-		vBoxWindows.pack_start(frameExercises, False,False,0)
+		vBoxWindows.pack_start(frameExercises, True,True,0)
 		windowFindTheDifferent.add_with_viewport(vBoxWindows)
 		
 		return windowFindTheDifferent
 		
 	
+		
 		

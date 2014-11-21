@@ -51,8 +51,8 @@ class SimpleAssociation():
 		
 		vBoxWindows = gtk.VBox(False, 5)
 		hBoxExercises = gtk.HBox(True, 50)
-		vBoxOptions = gtk.VBox(False, 5)
-		vBoxCorrespondences = gtk.VBox(False, 5)
+		vBoxOptions = gtk.VBox(True, 5)
+		vBoxCorrespondences = gtk.VBox(True, 5)
 		
 		frameExercises = gtk.Frame() 
 		
@@ -90,7 +90,7 @@ class SimpleAssociation():
 			
 		hBoxExercises.pack_start(vBoxOptions, False,True,50)
 		hBoxExercises.pack_start(vBoxCorrespondences, False,True,50)
-		vBoxWindows.pack_start(frameExercises, False,False,0)
+		vBoxWindows.pack_start(frameExercises, True,True,0)
 		
 		windowSimpleAssociation.add_with_viewport(vBoxWindows)
 		
@@ -308,4 +308,6 @@ class SimpleAssociation():
 		
 	def setSelectionStateColour(self,selectionState, index, colour):
 		selectionState[index]['colour'] = colour
+	
+r
 	

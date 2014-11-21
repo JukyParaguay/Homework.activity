@@ -57,30 +57,21 @@
       "codeType": 3,
       "name": "Busca los Iguales",
       "items": [
-        {
-          "letter": "a"
-        },
-        {
-          "letter": "b"
-        },
-        {
-          "letter": "c"
-        },
-        {
-          "letter": "d"
-        },
-        {
-          "letter": "e"
-        },
-        {
-          "letter": "f"
-        },
-         {
-          "letter": "g"
-        },
-         {
-          "letter": "h"
-        }
+          {"type":"letter", "value":"a"}, 
+        
+          {"type":"letter", "value":"b"}, 
+        
+          {"type":"letter", "value":"c"}, 
+        
+          {"type":"letter", "value":"d"}, 
+        
+          {"type":"letter", "value":"e"}, 
+        
+          {"type":"letter", "value":"f"}, 
+        
+          {"type":"letter", "value":"g"},
+       
+          {"type":"letter", "value":"h"} 
       ]
     },
     {
