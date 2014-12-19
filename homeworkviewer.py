@@ -79,13 +79,14 @@ class ModalWindowDone:
 		
 		doneImageContainer =  gtk.Image()
 		buttonImageContainer =  gtk.Image()
-		
+		buttonImageContainer.set_from_stock(gtk.STOCK_OK, gtk.ICON_SIZE_BUTTON)		
+	
 		if self.parent.currentIndexExercise < (self.parent.amountExercises - 1):
 			doneImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/party.png").scale_simple(200, 200, 2))	
-			buttonImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/left.png").scale_simple(50, 50, 2))
+			#buttonImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/left.png").scale_simple(50, 50, 2))
 		else:
 			doneImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/prize.png").scale_simple(200, 200, 2))
-			buttonImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/left.png").scale_simple(50, 50, 2))
+			#buttonImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/left.png").scale_simple(50, 50, 2))
 		
 		
 		
