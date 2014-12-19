@@ -309,5 +309,5 @@ class SimpleAssociation():
 	def setSelectionStateColour(self,selectionState, index, colour):
 		selectionState[index]['colour'] = colour
 	
-r
+
 	
