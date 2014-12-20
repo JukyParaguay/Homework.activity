@@ -119,7 +119,7 @@ class HomeWorkViewer(activity.Activity):
 
 		self._logger = logging.getLogger('home-work-viewer')
                 self._logger.setLevel(logging.DEBUG)
-
+		
 
 		'''Obtenemos el JSON de la Actividad'''
 		json_data=open('json.txt')
@@ -144,10 +144,7 @@ class HomeWorkViewer(activity.Activity):
 		toolbar_box.toolbar.insert(title_entry, 1)
 		title_entry.show()
 
-		'''share_button = ShareButton(self)
-		toolbar_box.toolbar.insert(share_button, -1)
-		share_button.show()'''
-
+		
 		separator = gtk.SeparatorToolItem()
 		separator.props.draw = False
 		separator.set_expand(True)
@@ -171,21 +168,20 @@ class HomeWorkViewer(activity.Activity):
 		self.set_toolbar_box(toolbar_box)
 		toolbar_box.show()
 
-		self.amountExercises = len(self.activity.exercises)
-		self.currentIndexExercise = -1
-		
-		self.nextButtonCallBack(None, None)
-
-
-		vBoxGeneral = gtk.VBox(False, 2)
-		self.set_canvas(vBoxGeneral)
+		self.vBoxMain = gtk.VBox(True, 2)
+		self.set_canvas(self.vBoxMain)
 		self.show_all()
-		
 	
+
+		self.createWindowExercises()
+		
+		
+
+			
 	def exerciseCompletedCallBack(self):
 			
-			self.modalDoneWindow = ModalWindowDone(self)
-			self.modalDoneWindow.show()	
+		self.modalDoneWindow = ModalWindowDone(self)
+		self.modalDoneWindow.show()	
 	
 	def manageBackNextButtons(self):
 		self.getLogger().debug("Inside to manageBackNextButtons")
@@ -208,37 +204,50 @@ class HomeWorkViewer(activity.Activity):
 
 
 	def nextButtonCallBack(self, button, *args):
-		self.currentIndexExercise = self.currentIndexExercise + 1
-		self.createNewWindowExercise()
+	
+		self.vBoxMain.get_children()[self.currentIndexExercise].hide()
+                self.currentIndexExercise = self.currentIndexExercise + 1
+		
+                self.vBoxMain.get_children()[self.currentIndexExercise].show_all()
+                self.manageBackNextButtons()
+
 		
 	
 	def backButtonCallBack(self, button, *args):
-		self.currentIndexExercise = self.currentIndexExercise - 1
-		self.createNewWindowExercise()
+		self.vBoxMain.get_children()[self.currentIndexExercise].hide()
+                self.currentIndexExercise = self.currentIndexExercise - 1
+                self.vBoxMain.get_children()[self.currentIndexExercise].show_all()
+                self.manageBackNextButtons()
+
 	
-	def createNewWindowExercise(self):
-		newExercise = None
-		newWindowExercise = None
-		if self.activity.exercises[self.currentIndexExercise].codeType == 1:
-			newExercise = SimpleAssociation()
-			newWindowExercise = newExercise.getWindow(self.activity.exercises[self.currentIndexExercise], self)
-		elif self.activity.exercises[self.currentIndexExercise].codeType == 2:
-			newExercise = FindTheDifferent()
-			newWindowExercise = newExercise.getWindow(self.activity.exercises[self.currentIndexExercise], self)
-		elif self.activity.exercises[self.currentIndexExercise].codeType == 3:
-			newExercise = SearchTheSame()
-			newWindowExercise = newExercise.getWindow(self.activity.exercises[self.currentIndexExercise], self)
-			
-		vBoxMain = self.get_children()[0]
-		if len(vBoxMain.get_children()) > 1 :
-			oldWindowExercise = vBoxMain.get_children()[1]
-			vBoxMain.remove(oldWindowExercise)
-			
-		vBoxMain.pack_start(newWindowExercise, True, True, 0)
+	def createWindowExercises(self):
 		
-		self.manageBackNextButtons()
-		self.show_all()
-	
+		self._logger.debug("inside to createNewWindowExercise")		
+             
+		self.amountExercises = len(self.activity.exercises)
+		self.currentIndexExercise = 0
+		
+                index = 0
+		while index < self.amountExercises:
+                        newExercise = None
+                	newWindowExercise = None
+                	if self.activity.exercises[index].codeType  == 1:
+                        	newExercise = SimpleAssociation()
+                        	newWindowExercise = newExercise.getWindow(self.activity.exercises[index], self)  
+                	elif self.activity.exercises[index].codeType  == 2:
+                        	newExercise = FindTheDifferent()
+                        	newWindowExercise = newExercise.getWindow(self.activity.exercises[index] ,self)
+                	elif self.activity.exercises[index].codeType  == 3:
+                        	newExercise = SearchTheSame()
+                        	newWindowExercise = newExercise.getWindow(self.activity.exercises[index] ,self)
+
+			newWindowExercise.hide()
+                	self.vBoxMain.pack_start(newWindowExercise, True, True, 0)
+               		index = index + 1
+		self.vBoxMain.get_children()[self.currentIndexExercise].show_all()		
+ 
+		self.manageBackNextButtons()		
+
 	def read_file(self, tmp_file):
 		pass	
 	def write_file(self, tmp_file):
