@@ -28,9 +28,6 @@ Reference of colours codes :http://www.rapidtables.com/web/color/RGB_Color.htm
 SELECTED_COLOUR = gtk.gdk.Color("#FFFF00")
 
 
-
-
-
 class SimpleAssociation():
 
 	def saveExerciseState(self):
@@ -43,10 +40,6 @@ class SimpleAssociation():
 		stateJson['currentCorrespondenceSelected'] = self.currentCorrespondenceSelected
 		stateJson['lastCorrespondenceSelected'] = self.lastCorrespondenceSelected
 		
-		'''prueba = json.dumps(self.optionsList, namedtuple_as_object=True)
-		self.mainWindows.getLogger().debug(prueba)'''
-			
-		#self.mainWindows.getLogger().debug(self.optionsList)
 		stateJson['optionsList'] = self.optionsList
 		stateJson['correspondencesList'] = self.correspondencesList
 		stateJson['COLOURS_ASSOCIATION'] = self.COLOURS_ASSOCIATION	
@@ -99,9 +92,6 @@ class SimpleAssociation():
 			#forest green
 			self.COLOURS_ASSOCIATION.append({"colour":"#228B22", "available":True})
 
-
-
-
 		else:
 			self.optionsSelectionState = stateJson['optionsSelectionState']
 			self.correspondencesSelectionState = stateJson['correspondencesSelectionState']
@@ -114,7 +104,10 @@ class SimpleAssociation():
 			self.optionsList = stateJson['optionsList']
 			self.correspondencesList = stateJson['correspondencesList']
 			self.COLOURS_ASSOCIATION = stateJson['COLOURS_ASSOCIATION']			
-		
+	
+		self.mainWindows.getLogger().debug( self.COLOURS_ASSOCIATION )
+
+	
 		firstOptionEventBox = None
 		#self.mainWindows.getLogger().debug(self.optionsList)		
 
@@ -130,12 +123,14 @@ class SimpleAssociation():
 				self.optionsSelectionState.append ( {"selected": -1, "pair": option['indexPair'], "colour": None} )
 			
 			'''Correspondences'''
-			eventBoxCorrespondence = self.createEventBox(self.correspondencesList[index]['correspondence']['value'], \
-						self.correspondencesList[index]['correspondence']['type'])
+			eventBoxCorrespondence = ( self.createEventBox(self.correspondencesList[index]['correspondence']['value'],
+							self.correspondencesList[index]['correspondence']['type']) )
+			
 			eventBoxCorrespondence.connect("button_press_event", self.pairSelectedCallBack, self.vBoxOptions)
 			self.addEventBoxToVBox(eventBoxCorrespondence, self.vBoxCorrespondences)
 			if stateJson is None:
-				self.correspondencesSelectionState.append( {"selected": -1, "pair": self.correspondencesList[index]['indexPair'], "colour": None} )	
+				( self.correspondencesSelectionState.append( {"selected": -1,
+				"pair":self.correspondencesList[index]['indexPair'], "colour": None} ) )	
 			
 			
 		hBoxExercises.pack_start(self.vBoxOptions, False,True,50)
@@ -146,11 +141,13 @@ class SimpleAssociation():
 		
 		if stateJson is not None:
 			self.repaintResumeItems()
-	
+		else:
+			self.selectFirtImage(firstOptionEventBox)	
 			
 		return windowSimpleAssociation
 
 	def repaintResumeItems(self):
+		
 		for index, value in enumerate(self.optionsSelectionState):
 			eventBoxOption = self.vBoxOptions.get_children()[index].get_children()[0]
 			eventBoxCorrespondence = self.vBoxCorrespondences.get_children()[index].get_children()[0]
@@ -164,6 +161,9 @@ class SimpleAssociation():
 			self.mainWindows.getLogger().debug(valueCorresondence)
 			if valueCorresondence['colour'] is not None:
 				self.changeBackgroundColour(eventBoxCorrespondence, str(valueCorresondence['colour']['colour']))
+		
+		firstFrameOption = self.vBoxOptions.get_children()[self.currentOptionSelected] 
+		self.fakeSelection(firstFrameOption)
 
 	def addEventBoxToVBox(self, eventBox, vBox):
 		frameEventBox = gtk.Frame() 
@@ -210,8 +210,10 @@ class SimpleAssociation():
 		random.shuffle(indexsList)
 	
 		for index, item in enumerate(items):
-			optionsList[index] = {"option":{"type":item.option.type, "value":item.option.value}, "indexPair": indexsList[index]}
-			correspondencesList[indexsList[index]] = {"correspondence":{"type":item.correspondence.type, "value":item.correspondence.value}, "indexPair": index}
+			optionsList[index] = {"option":{"type":item.option.type, "value":item.option.value}, \
+						"indexPair": indexsList[index]}
+			correspondencesList[indexsList[index]] = ( {"correspondence":{"type":item.correspondence.type, 
+								"value":item.correspondence.value}, "indexPair": index} )
 		
 		return (optionsList, correspondencesList)
 	
@@ -235,12 +237,24 @@ class SimpleAssociation():
 				return colour
 	
 	def setAvailableColour(self, colour):
-		self.COLOURS_ASSOCIATION[self.COLOURS_ASSOCIATION.index(colour)]['available'] = True
+		
+		#self.mainWindows.getLogger().debug(colour)
+		for currentColour in self.COLOURS_ASSOCIATION:
+			if currentColour['colour'] == colour['colour']:
+				currentColour['available'] = True
+				break
+		#self.COLOURS_ASSOCIATION[self.COLOURS_ASSOCIATION.index(colour)]['available'] = True
 	
 	def setUnavailableColour(self, colour):
-		self.mainWindows.getLogger().debug(self.COLOURS_ASSOCIATION)
-		self.COLOURS_ASSOCIATION[self.COLOURS_ASSOCIATION.index(colour)]['available'] = False
+		#self.mainWindows.getLogger().debug(self.COLOURS_ASSOCIATION)
+		#self.COLOURS_ASSOCIATION[self.COLOURS_ASSOCIATION.index(colour)]['available'] = False
+		for currentColour in self.COLOURS_ASSOCIATION:
+			if currentColour['colour'] == colour['colour']:
+				currentColour['available'] = False
+				break
+
 		
+
 	
 	def imageSelectedCallBack(self, imageEventBox, *args):
 		
@@ -312,7 +326,7 @@ class SimpleAssociation():
 		
 		pairEventBoxCurrentImageSelected = None
 		if self.currentOptionSelected != -1 and pairIndexCurrentImageSelected != -1:
-			pairEventBoxCurrentImageSelected = allPairFrames[self.optionsSelectionState[self.currentOptionSelected]['selected']].get_children()[0]
+			pairEventBoxCurrentImageSelected =  allPairFrames[self.optionsSelectionState[self.currentOptionSelected]['selected']].get_children()[0]
 		
 		
 		# Verificamos que el ultimo par seleccionado no tenga una asocicion
@@ -343,7 +357,9 @@ class SimpleAssociation():
 				
 				
 			#El par seleccionado ya fue asociado por otra imagen, la cual no es la actualmente seleccionada
-			if self.correspondencesSelectionState[indexPairSelected]['selected'] != -1 and self.correspondencesSelectionState[indexPairSelected]['selected'] != self.currentOptionSelected:
+			if ( self.correspondencesSelectionState[indexPairSelected]['selected'] != -1 
+				and self.correspondencesSelectionState[indexPairSelected]['selected'] != self.currentOptionSelected):
+				
 				#des-asociamos la imagen anterior asociada al par
 				imagePairSelectedEventBox= allFramesImages[self.correspondencesSelectionState[indexPairSelected]['selected']].get_children()[0]
 				self.changeBackgroundColour(imagePairSelectedEventBox,"white")
@@ -364,12 +380,16 @@ class SimpleAssociation():
 		#cambiamos los colores de los bordes (frames) para notificar la seleccion
 		self.fakeSelection(framePairSelected)
 		lastFramePairSelected = allPairFrames[self.lastCorrespondenceSelected]
-		self.fakeUnselection(lastFramePairSelected)
+		self.mainWindows.getLogger().debug(self.lastCorrespondenceSelected)
+		self.mainWindows.getLogger().debug(self.currentCorrespondenceSelected)
+		if (self.lastCorrespondenceSelected != self.currentCorrespondenceSelected) and self.lastCorrespondenceSelected != -1:
+			self.fakeUnselection(lastFramePairSelected)
 		
 		#Comprabamos la finalización del ejercicio
 		self.checkCompletedExercise()
 	
 	def fakeSelection(self, frame):
+		self.mainWindows.getLogger().debug(frame)
 		frame.modify_bg(gtk.STATE_NORMAL, SELECTED_COLOUR)
 	
 	def fakeUnselection(self, frame):
