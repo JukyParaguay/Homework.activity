@@ -46,6 +46,8 @@ from simpleassociation import SimpleAssociation
 from findthedifferent import FindTheDifferent
 from searchthesame import SearchTheSame
 
+import os
+
 
 class ModalWindowDone:
 
@@ -172,8 +174,12 @@ class HomeWorkViewer(activity.Activity):
 		self.set_canvas(self.vBoxMain)
 		self.show_all()
 	
-
-		self.createWindowExercises()
+		jsonState = None		
+		if os.path.exists('exerciseState.txt'):		
+			with open('exerciseState.txt', 'r') as stateFile:
+				jsonState = json.load(stateFile)			
+			stateFile.close()
+		self.createWindowExercises(jsonState)
 		
 		
 
@@ -220,7 +226,7 @@ class HomeWorkViewer(activity.Activity):
                 self.manageBackNextButtons()
 
 	
-	def createWindowExercises(self):
+	def createWindowExercises(self, stateJson):
 		
 		self._logger.debug("inside to createNewWindowExercise")		
              
@@ -231,9 +237,12 @@ class HomeWorkViewer(activity.Activity):
 		while index < self.amountExercises:
                         newExercise = None
                 	newWindowExercise = None
+			stateExercise = None
+			if stateJson is not None:
+				stateExercise = stateJson['exercises'][index]
                 	if self.activity.exercises[index].codeType  == 1:
                         	newExercise = SimpleAssociation()
-                        	newWindowExercise = newExercise.getWindow(self.activity.exercises[index], self)  
+                        	newWindowExercise = newExercise.getWindow(self.activity.exercises[index], self, stateExercise)  
                 	elif self.activity.exercises[index].codeType  == 2:
                         	newExercise = FindTheDifferent()
                         	newWindowExercise = newExercise.getWindow(self.activity.exercises[index] ,self)
@@ -249,10 +258,52 @@ class HomeWorkViewer(activity.Activity):
 		self.manageBackNextButtons()		
 
 	def read_file(self, tmp_file):
-		pass	
-	def write_file(self, tmp_file):
-		pass	
+		'''self.getLogger().debug("Inside to read_file")
+                self.getLogger().debug(tmp_file_path)
+                tmpFile = open(tmp_file_path, 'r')
+                theJsonState = json.load(tmpFile)
+                self.getLogger().debug(theJsonState)
+
+                self.resumeActivity(theJsonState)
+                tmpFile.close()'''
+		pass
+		
+
+
 	
+	def write_file(self, tmp_file):
+		self.getLogger().debug("Inside to write_file")
+                #self.getLogger().debug(tmp_file_path)
+                #self.getLogger().debug(self.metadata.get_dictionary())
+                #tmpFile = open(tmp_file_path, 'w')
+                self.saveActivityState()
+                #tmpFile.close()
+		
 	def getLogger(self):
                 return self._logger
+	
+	def saveActivityState(self):
+                self.getLogger().debug("inside to saveActivityState")
+                allExerciseWindows = self.vBoxMain.get_children()
+                theJson = {}
+                theJson["name"] = "JSON de prueba"
+                theJson['currentIndexExercise'] = self.currentIndexExercise
+                theJson["exercises"] = []
+                itemsToCopy = []
+                activityName = self.metadata.get('title')
+                for index, exerciseWindow in enumerate( allExerciseWindows ):
+                                exerciseJson = exerciseWindow.exerciseInstance.saveExerciseState()
+                                theJson['exercises'].append(exerciseJson)
+
+		#theJson = json.dumps(theJson, default=lambda o: o.__dict__)
+                self.getLogger().debug(theJson)
+                with open('exerciseState.txt', 'w+') as stateFile:
+			json.dump(theJson,stateFile )
+		stateFile.close()
+	 
+	def resumeActivity(self, jsonState):
+                #for exerciseJson in jsonState['exercises']:
+                 self.createWindowExercises(jsonState)
+                #self.moveToExerciseIndex(jsonState['currentExerciseIndex'])
+
 
