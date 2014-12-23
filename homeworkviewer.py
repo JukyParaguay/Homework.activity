@@ -253,19 +253,13 @@ class HomeWorkViewer(activity.Activity):
 			newWindowExercise.hide()
                 	self.vBoxMain.pack_start(newWindowExercise, True, True, 0)
                		index = index + 1
-		self.vBoxMain.get_children()[self.currentIndexExercise].show_all()		
- 
+		if stateJson is None:
+			self.vBoxMain.get_children()[self.currentIndexExercise].show_all()		
+		else:
+			self.moveToExerciseIndex(stateJson['currentIndexExercise'])
 		self.manageBackNextButtons()		
 
 	def read_file(self, tmp_file):
-		'''self.getLogger().debug("Inside to read_file")
-                self.getLogger().debug(tmp_file_path)
-                tmpFile = open(tmp_file_path, 'r')
-                theJsonState = json.load(tmpFile)
-                self.getLogger().debug(theJsonState)
-
-                self.resumeActivity(theJsonState)
-                tmpFile.close()'''
 		pass
 		
 
@@ -301,9 +295,18 @@ class HomeWorkViewer(activity.Activity):
 			json.dump(theJson,stateFile )
 		stateFile.close()
 	 
-	def resumeActivity(self, jsonState):
-                #for exerciseJson in jsonState['exercises']:
-                 self.createWindowExercises(jsonState)
-                #self.moveToExerciseIndex(jsonState['currentExerciseIndex'])
 
+	def moveToExerciseIndex(self, indexExercise):
+                self.getLogger().debug("Inside to moveToExerciseIndex")
+		vBoxMain = self.vBoxMain
+                allWindowsExercises = vBoxMain.get_children()
+                for index, windowExercise in enumerate(allWindowsExercises):
+                        self.getLogger().debug(index)
+			self.getLogger().debug(indexExercise)
+			if index != indexExercise:
+                                windowExercise.hide()
+                        else:
+                                windowExercise.show_all()
+                self.currentIndexExercise = indexExercise
+                self.manageBackNextButtons()
 
