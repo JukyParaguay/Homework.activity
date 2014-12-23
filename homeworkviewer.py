@@ -248,7 +248,7 @@ class HomeWorkViewer(activity.Activity):
                         	newWindowExercise = newExercise.getWindow(self.activity.exercises[index] ,self, stateExercise)
                 	elif self.activity.exercises[index].codeType  == 3:
                         	newExercise = SearchTheSame()
-                        	newWindowExercise = newExercise.getWindow(self.activity.exercises[index] ,self)
+                        	newWindowExercise = newExercise.getWindow(self.activity.exercises[index] ,self, stateExercise)
 
 			newWindowExercise.hide()
                 	self.vBoxMain.pack_start(newWindowExercise, True, True, 0)
