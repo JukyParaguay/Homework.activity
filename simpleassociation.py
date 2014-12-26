@@ -35,10 +35,10 @@ COLOURS_ASSOCIATION.append({"colour":"#8FBC8F", "available":True})
 COLOURS_ASSOCIATION.append({"colour":"#228B22", "available":True})
 
 
-
-
 '''Curren item selection association'''
 SELECTED_COLOUR = gtk.gdk.Color("#FFFF00")
+
+FONT_DESCRIPTION = 'DejaVu Bold 40'
 
 
 class SimpleAssociation():
@@ -177,18 +177,20 @@ class SimpleAssociation():
 		eventBox = gtk.EventBox()
 		if typePayload == "image":
 			imageContainer =  gtk.Image()
-			imageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file(payload).scale_simple(IMAGES_SCALE[0], IMAGES_SCALE[1], 2))
+			pixbuf = gtk.gdk.pixbuf_new_from_file(payload)
+			pixbuf = gtk.gdk.Pixbuf.add_alpha(pixbuf,255,255,255 ,255)
+			imageContainer.set_from_pixbuf(pixbuf)
 			eventBox.add(imageContainer)
 			eventBox.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color('white'))
 		if typePayload == "letter":
 			letterLabel = gtk.Label(payload)
-			letterLabel.modify_font(pango.FontDescription("Courier Bold 60"))
+			letterLabel.modify_font(pango.FontDescription(FONT_DESCRIPTION))
 			eventBox.add(letterLabel)
 			eventBox.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color('white'))
 			eventBox.set_size_request(LETTERS_SCALE[0], LETTERS_SCALE[1])
 		if typePayload == "word":
 			letterLabel = gtk.Label(payload)
-			letterLabel.modify_font(pango.FontDescription("Courier Bold 30"))
+			letterLabel.modify_font(pango.FontDescription(FONT_DESCRIPTION))
 			eventBox.add(letterLabel)
 			eventBox.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color('white'))
 			eventBox.set_size_request(LETTERS_SCALE[0], LETTERS_SCALE[1])

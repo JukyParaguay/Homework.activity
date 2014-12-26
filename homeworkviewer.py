@@ -85,8 +85,7 @@ class ModalWindowDone:
 		else:
 			doneImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/prize.png").scale_simple(200, 200, 2))
 				
-		buttonOk = gtk.Button(_("OK"))
-		#buttonOk.set_image(buttonImageContainer)
+		buttonOk = gtk.Button(_("OK"))	
 		buttonOk.connect ("clicked", self.goBackButtonCallBack)
 		
 		vBox.pack_start(doneImageContainer, True,True,10)
@@ -176,7 +175,9 @@ class HomeWorkViewer(activity.Activity):
 			
 			
 	def exerciseCompletedCallBack(self):
-		self.exercisesMatches = self.exercisesMatches + 1	
+		if self.amountExercises > self.exercisesMatches:
+			self.exercisesMatches = self.exercisesMatches + 1	
+		
 		self.modalDoneWindow = ModalWindowDone(self)
 		self.modalDoneWindow.show()	
 	

@@ -16,6 +16,8 @@ IMAGES_SCALE = [100, 100]
 LETTERS_SCALE = [100, 100]
 
 
+FONT_DESCRIPTION = "DejaVu Bold 40"
+
 class FindTheDifferent():
 	
 	def saveExerciseState(self):
@@ -63,17 +65,16 @@ class FindTheDifferent():
 		
 		if itemElement.type == "letter":
 			label = gtk.Label(itemElement.value)
-			label.modify_font(pango.FontDescription("Courier Bold 40"))
+			label.modify_font(pango.FontDescription(FONT_DESCRIPTION))
 			eventBox.add(label)
 		elif itemElement.type == "image":
                         image = gtk.Image()
-                        image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file(\
-                                itemElement.value ).scale_simple(IMAGES_SCALE[0], IMAGES_SCALE[1], 2))
+			pixbuf = gtk.gdk.pixbuf_new_from_file(itemElement.value) 
+                        pixbuf = gtk.gdk.Pixbuf.add_alpha(pixbuf,255,255,255 ,255)
+			image.set_from_pixbuf(pixbuf)
                         eventBox.add(image)
                         eventBox.show_all()
-
-
-			
+	
 		return eventBox
 		
 	def getWindow(self, exercise, mainWindows, stateJson):
@@ -85,7 +86,7 @@ class FindTheDifferent():
 		frameExercises = gtk.Frame() 
 		
 		vBoxWindows = gtk.VBox(False, 5)
-		vBoxExercises = gtk.VBox(False, 5)
+		vBoxExercises = gtk.VBox(True, 5)
 		
 		frameExercises.add(vBoxExercises)
 		

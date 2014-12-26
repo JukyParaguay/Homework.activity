@@ -37,16 +37,16 @@ COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#808080"), "available":True,
 IMAGES_SCALE = [100, 100]
 LETTERS_SCALE = [100, 100]
 
+FONT_DESCRIPTION = 'DejaVu Bold 40'
 
 
 class SearchTheSame():
-	
 		
 	def blankEventBox(self):
 		eventBox = gtk.EventBox()
 		eventBox.modify_bg(gtk.STATE_NORMAL, eventBox.get_colormap().alloc_color("white"))
 		blankLabel = gtk.Label("")
-		blankLabel.modify_font(pango.FontDescription("Courier Bold 50"))
+		blankLabel.modify_font(pango.FontDescription(FONT_DESCRIPTION))
 		eventBox.add(blankLabel)
 		return eventBox	
 		
@@ -83,7 +83,7 @@ class SearchTheSame():
 		oldPayload = eventBox.get_children()[0]
 		eventBox.remove(oldPayload)
 		blankLabel = gtk.Label("")
-		blankLabel.modify_font(pango.FontDescription("Courier Bold 50"))
+		blankLabel.modify_font(pango.FontDescription(FONT_DESCRIPTION))
 		eventBox.add(blankLabel)
 		eventBox.show_all()
 		
@@ -93,13 +93,14 @@ class SearchTheSame():
 		payload = self.payloads[self.mapTable[rowIndex][columnIndex][2]]
 		if payload.type == "letter":
 			letterLabel = gtk.Label(payload.value)
-			letterLabel.modify_font(pango.FontDescription("Courier Bold 50"))
+			letterLabel.modify_font(pango.FontDescription(FONT_DESCRIPTION))
 			eventBox.add(letterLabel)
 			eventBox.show_all()
 		elif payload.type == "image":
 			image = gtk.Image()
-                        image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file(\
-                                payload.value ).scale_simple(IMAGES_SCALE[0], IMAGES_SCALE[1], 2))
+			pixbuf = gtk.gdk.pixbuf_new_from_file(payload.value)
+                        pixbuf = gtk.gdk.Pixbuf.add_alpha(pixbuf,255,255,255 ,255)
+                        image.set_from_pixbuf(pixbuf)
 			eventBox.add(image)
 			eventBox.show_all()
         def repaintTable(self):
@@ -177,9 +178,7 @@ class SearchTheSame():
 	
 	
 	def getWindow(self, exercise, mainWindows, stateJson):
-	
 				
-			
 		self.mainWindows = mainWindows
 		self.mainWindows.getLogger().debug("Inside to getWindow()")
 		self.mainWindows.getLogger().debug(exercise)		
@@ -191,7 +190,7 @@ class SearchTheSame():
 		frameExercises = gtk.Frame() 
 		
 		
-		vBoxWindows = gtk.VBox(False, 10)
+		vBoxWindows = gtk.VBox(True, 10)
 		vBoxExercises = gtk.VBox(True, 10)
 		
 		
@@ -234,7 +233,7 @@ class SearchTheSame():
 			self.repaintTable()	
 
 	
-		vBoxExercises.pack_start(self.vBox, False,False,0)
+		vBoxExercises.pack_start(self.vBox, True,True,0)
 		vBoxWindows.pack_start(frameExercises, True,True,0)
 		windowSearchTheSame.add_with_viewport(vBoxWindows)
 		
