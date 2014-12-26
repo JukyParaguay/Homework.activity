@@ -150,7 +150,6 @@ class SearchTheSame():
 			if self.lastCellSelected != pairSelected:
 				
 				self.fakeUnselection(lastEventBoxSelected)
-				#lastEventBoxSelected.get_children()[0].set_text("")
 				self.lastCellSelected =[rowIndex,columnIndex]
 			
 			else :
@@ -204,10 +203,9 @@ class SearchTheSame():
 		columns = 4
 		rows = 4
 		
-		rowsCount = 0
-		#self.storeSelectionState = self.createStoreSelection(exercise)
+		rowsCount = 0	
 		self.mapTable = exercise.mapTable
-		#self.addPayloadToMapTable(exercise['items'])
+		
 		self.setAllAvailableSelectionColour()
 		self.payloads = exercise.items
 		self.lastCellSelected = None

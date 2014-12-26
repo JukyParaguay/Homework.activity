@@ -11,6 +11,8 @@ import pango
 
 import random
 
+from gettext import gettext as _
+
 
 ''' Scales '''
 IMAGES_SCALE = [100, 100]
@@ -20,6 +22,17 @@ LETTERS_SCALE = [100, 100]
 '''Color Selection association
 Reference of colours codes :http://www.rapidtables.com/web/color/RGB_Color.htm
 '''
+COLOURS_ASSOCIATION = []
+#medium sea green
+COLOURS_ASSOCIATION.append({"colour":"#3CB371", "available":True})
+#teal
+COLOURS_ASSOCIATION.append({"colour":"#008080", "available":True})
+#thistle
+COLOURS_ASSOCIATION.append({"colour":"#D8BFD8", "available":True})
+#dark sea green
+COLOURS_ASSOCIATION.append({"colour":"#8FBC8F", "available":True})
+#forest green
+COLOURS_ASSOCIATION.append({"colour":"#228B22", "available":True})
 
 
 
@@ -80,18 +93,8 @@ class SimpleAssociation():
 		
 			self.optionsList, self.correspondencesList = self.disorderCorrespondences(exercise.items)
 			
-			self.COLOURS_ASSOCIATION = []
-			#medium sea green
-			self.COLOURS_ASSOCIATION.append({"colour":"#3CB371", "available":True})
-			#teal
-			self.COLOURS_ASSOCIATION.append({"colour":"#008080", "available":True})
-			#thistle
-			self.COLOURS_ASSOCIATION.append({"colour":"#D8BFD8", "available":True})
-			#dark sea green
-			self.COLOURS_ASSOCIATION.append({"colour":"#8FBC8F", "available":True})
-			#forest green
-			self.COLOURS_ASSOCIATION.append({"colour":"#228B22", "available":True})
-
+			self.COLOURS_ASSOCIATION = COLOURS_ASSOCIATION
+			
 		else:
 			self.optionsSelectionState = stateJson['optionsSelectionState']
 			self.correspondencesSelectionState = stateJson['correspondencesSelectionState']
@@ -109,7 +112,7 @@ class SimpleAssociation():
 
 	
 		firstOptionEventBox = None
-		#self.mainWindows.getLogger().debug(self.optionsList)		
+		
 
 		for index,  option in enumerate(self.optionsList):
 			'''Options'''
@@ -155,7 +158,7 @@ class SimpleAssociation():
 			if value['colour'] is not None:
 				self.mainWindows.getLogger().debug(value)
 				self.changeBackgroundColour(eventBoxOption,str(value['colour']['colour']))				
-				#self.setUnavailableColour(str(value['colour']['colour']))
+				
 	
 			valueCorresondence = self.correspondencesSelectionState[index]
 			self.mainWindows.getLogger().debug(valueCorresondence)
@@ -237,25 +240,21 @@ class SimpleAssociation():
 				return colour
 	
 	def setAvailableColour(self, colour):
-		
-		#self.mainWindows.getLogger().debug(colour)
+			
 		for currentColour in self.COLOURS_ASSOCIATION:
 			if currentColour['colour'] == colour['colour']:
 				currentColour['available'] = True
 				break
-		#self.COLOURS_ASSOCIATION[self.COLOURS_ASSOCIATION.index(colour)]['available'] = True
+		
 	
 	def setUnavailableColour(self, colour):
-		#self.mainWindows.getLogger().debug(self.COLOURS_ASSOCIATION)
-		#self.COLOURS_ASSOCIATION[self.COLOURS_ASSOCIATION.index(colour)]['available'] = False
+		
 		for currentColour in self.COLOURS_ASSOCIATION:
 			if currentColour['colour'] == colour['colour']:
 				currentColour['available'] = False
 				break
 
-		
-
-	
+			
 	def imageSelectedCallBack(self, imageEventBox, *args):
 		
 		frameImageSelected = imageEventBox.get_parent()
@@ -371,12 +370,7 @@ class SimpleAssociation():
 			self.correspondencesSelectionState[indexPairSelected]['selected'] = self.currentOptionSelected
 			self.optionsSelectionState[self.currentOptionSelected]['selected'] = indexPairSelected
 			self.setUnavailableColour(colourImageSelected)	
-		else:
-			# TODO: No hay imagen seleccionada, re-ver!
-			'''colourAvailable =  self.getAvailableSelectionColour()
-			pairEventBox.modify_bg(gtk.STATE_NORMAL, pairEventBox.get_colormap().alloc_color(colourAvailable['colour']))
-			self.correspondencesSelectionState[indexPairSelected]['colour'] = colourAvailable'''
-			
+				
 		#cambiamos los colores de los bordes (frames) para notificar la seleccion
 		self.fakeSelection(framePairSelected)
 		lastFramePairSelected = allPairFrames[self.lastCorrespondenceSelected]

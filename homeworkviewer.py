@@ -33,10 +33,8 @@ from sugar.activity.widgets import StopButton
 from sugar.activity.widgets import ShareButton
 
 
-
 import pygtk
 pygtk.require('2.0')
-import gtk
 import json
 from collections import namedtuple
 from array import *
@@ -45,7 +43,6 @@ import pango
 from simpleassociation import SimpleAssociation
 from findthedifferent import FindTheDifferent
 from searchthesame import SearchTheSame
-
 import os
 
 
@@ -83,17 +80,13 @@ class ModalWindowDone:
 		buttonImageContainer =  gtk.Image()
 		buttonImageContainer.set_from_stock(gtk.STOCK_OK, gtk.ICON_SIZE_BUTTON)		
 	
-		if self.parent.currentIndexExercise < (self.parent.amountExercises - 1):
-			doneImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/party.png").scale_simple(200, 200, 2))	
-			#buttonImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/left.png").scale_simple(50, 50, 2))
+		if self.parent.exercisesMatches < self.parent.amountExercises:
+			doneImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/party.png").scale_simple(200, 200, 2))		
 		else:
 			doneImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/prize.png").scale_simple(200, 200, 2))
-			#buttonImageContainer.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./activity-images/left.png").scale_simple(50, 50, 2))
-		
-		
-		
-		buttonOk = gtk.Button()
-		buttonOk.set_image(buttonImageContainer)
+				
+		buttonOk = gtk.Button(_("OK"))
+		#buttonOk.set_image(buttonImageContainer)
 		buttonOk.connect ("clicked", self.goBackButtonCallBack)
 		
 		vBox.pack_start(doneImageContainer, True,True,10)
@@ -115,7 +108,7 @@ class ModalWindowDone:
 
 
 class HomeWorkViewer(activity.Activity):
-	"""HelloWorldActivity class as specified in activity.info"""
+	
 
 	def __init__(self, handle):
 
@@ -154,12 +147,12 @@ class HomeWorkViewer(activity.Activity):
 		separator.show()
 
 		self.buttonBefore = ToolButton('go-previous')
-		self.buttonBefore.set_tooltip(_('Anterior'))
+		self.buttonBefore.set_tooltip(_('Back'))
 		self.buttonBefore.connect("clicked", self.backButtonCallBack)
 		toolbar_box.toolbar.insert(self.buttonBefore, 2)
 
 		self.buttonNext = ToolButton('go-next')
-		self.buttonNext.set_tooltip(_('Siguiente'))
+		self.buttonNext.set_tooltip(_('Next'))
 		self.buttonNext.connect("clicked", self.nextButtonCallBack)
 		toolbar_box.toolbar.insert(self.buttonNext, 3)
 
@@ -180,12 +173,10 @@ class HomeWorkViewer(activity.Activity):
 				jsonState = json.load(stateFile)			
 			stateFile.close()
 		self.createWindowExercises(jsonState)
-		
-		
-
+			
 			
 	def exerciseCompletedCallBack(self):
-			
+		self.exercisesMatches = self.exercisesMatches + 1	
 		self.modalDoneWindow = ModalWindowDone(self)
 		self.modalDoneWindow.show()	
 	
@@ -232,7 +223,8 @@ class HomeWorkViewer(activity.Activity):
              
 		self.amountExercises = len(self.activity.exercises)
 		self.currentIndexExercise = 0
-		
+		self.exercisesMatches = 0		
+	
                 index = 0
 		while index < self.amountExercises:
                         newExercise = None
@@ -256,22 +248,17 @@ class HomeWorkViewer(activity.Activity):
 		if stateJson is None:
 			self.vBoxMain.get_children()[self.currentIndexExercise].show_all()		
 		else:
+			self.exercisesMatches = stateJson['exercisesMatches']
 			self.moveToExerciseIndex(stateJson['currentIndexExercise'])
 		self.manageBackNextButtons()		
 
 	def read_file(self, tmp_file):
 		pass
 		
-
-
-	
 	def write_file(self, tmp_file):
 		self.getLogger().debug("Inside to write_file")
-                #self.getLogger().debug(tmp_file_path)
-                #self.getLogger().debug(self.metadata.get_dictionary())
-                #tmpFile = open(tmp_file_path, 'w')
                 self.saveActivityState()
-                #tmpFile.close()
+                
 		
 	def getLogger(self):
                 return self._logger
@@ -282,14 +269,15 @@ class HomeWorkViewer(activity.Activity):
                 theJson = {}
                 theJson["name"] = "JSON de prueba"
                 theJson['currentIndexExercise'] = self.currentIndexExercise
-                theJson["exercises"] = []
+                theJson['exercisesMatches'] = self.exercisesMatches
+		theJson["exercises"] = []
                 itemsToCopy = []
                 activityName = self.metadata.get('title')
                 for index, exerciseWindow in enumerate( allExerciseWindows ):
                                 exerciseJson = exerciseWindow.exerciseInstance.saveExerciseState()
                                 theJson['exercises'].append(exerciseJson)
 
-		#theJson = json.dumps(theJson, default=lambda o: o.__dict__)
+		
                 self.getLogger().debug(theJson)
                 with open('exerciseState.txt', 'w+') as stateFile:
 			json.dump(theJson,stateFile )
