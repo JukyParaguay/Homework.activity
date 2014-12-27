@@ -23,16 +23,18 @@ LETTERS_SCALE = [100, 100]
 Reference of colours codes :http://www.rapidtables.com/web/color/RGB_Color.htm
 '''
 COLOURS_ASSOCIATION = []
-#medium sea green
-COLOURS_ASSOCIATION.append({"colour":"#3CB371", "available":True})
+#Marron
+COLOURS_ASSOCIATION.append({"colour":"#800000", "available":True})
+#red
+COLOURS_ASSOCIATION.append({"colour":"#FF0000", "available":True})
 #teal
 COLOURS_ASSOCIATION.append({"colour":"#008080", "available":True})
 #thistle
-COLOURS_ASSOCIATION.append({"colour":"#D8BFD8", "available":True})
+COLOURS_ASSOCIATION.append({"colour":"#F5DEB3", "available":True})
 #dark sea green
-COLOURS_ASSOCIATION.append({"colour":"#8FBC8F", "available":True})
-#forest green
-COLOURS_ASSOCIATION.append({"colour":"#228B22", "available":True})
+COLOURS_ASSOCIATION.append({"colour":"#3CB371", "available":True})
+
+
 
 
 '''Curren item selection association'''

@@ -18,16 +18,16 @@ Reference of colours codes :http://www.rapidtables.com/web/color/RGB_Color.htm
 COLOURS_ASSOCIATION = []
 #Marron
 COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#800000"), "available":True, "id":0})
-#medium sea green
-COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#3CB371"), "available":True, "id":1})
+#red
+COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#FF0000"), "available":True, "id":1})
 #teal
 COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#008080"), "available":True, "id":2})
 #thistle
-COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#D8BFD8"), "available":True, "id":3})
+COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#F5DEB3"), "available":True, "id":3})
 #dark sea green
-COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#8FBC8F"), "available":True, "id":4})
-#forest green
-COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#228B22"), "available":True, "id":5})
+COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#3CB371"), "available":True, "id":4})
+#purple
+COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#800080"), "available":True, "id":5})
 #chocolate
 COLOURS_ASSOCIATION.append({"colour":gtk.gdk.Color("#D2691E"), "available":True, "id":6})
 #Gray
