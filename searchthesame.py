@@ -175,7 +175,9 @@ class SearchTheSame():
 		stateJson['matches'] = self.matches
                 stateJson['lastCellSelected'] = self.lastCellSelected
 		return stateJson
-	
+
+	def disconnectEventBoxs(self):
+		pass	
 	
 	def getWindow(self, exercise, mainWindows, stateJson):
 				

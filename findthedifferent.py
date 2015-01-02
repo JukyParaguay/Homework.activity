@@ -76,7 +76,11 @@ class FindTheDifferent():
                         eventBox.show_all()
 	
 		return eventBox
-		
+	
+	def disconnectEventBoxs(self):
+		for index, eventBox in enumerate(self.allEventBoxs):
+			eventBox.disconnect(self.idHandlers[index])	
+	
 	def getWindow(self, exercise, mainWindows, stateJson):
 		
 		self.mainWindows = mainWindows		
@@ -96,7 +100,9 @@ class FindTheDifferent():
 		else:
 			self.mainWindows.getLogger().debug("Is a resume of exercises...")
 			self.selectionsState = stateJson['selectionsState']
-					
+		
+		self.allEventBoxs = []
+		self.idHandlers = []				
 		for index, item in enumerate(items):
 			
 			frame = gtk.Frame()
@@ -120,7 +126,9 @@ class FindTheDifferent():
 					eventBox = self.createEventBox(item.equal)
 					
 				self.changeBackgroundColour(eventBox, 'white')
-				eventBox.connect("button-press-event", self.selectionCallBack, hVox, vBoxExercises, frame)
+				idHandler = eventBox.connect("button-press-event", self.selectionCallBack, hVox, vBoxExercises, frame)
+				self.allEventBoxs.append(eventBox)
+				self.idHandlers.append(idHandler)
 				hVox.pack_start(eventBox, False,True,0)
 				count = count + 1
 			

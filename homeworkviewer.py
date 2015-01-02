@@ -179,7 +179,8 @@ class HomeWorkViewer(activity.Activity):
 			self.exercisesMatches = self.exercisesMatches + 1	
 		
 		self.modalDoneWindow = ModalWindowDone(self)
-		self.modalDoneWindow.show()	
+		self.modalDoneWindow.show()
+		self.freezeExerciseWindow()	
 	
 	def manageBackNextButtons(self):
 		self.getLogger().debug("Inside to manageBackNextButtons")
@@ -283,8 +284,10 @@ class HomeWorkViewer(activity.Activity):
                 with open('exerciseState.txt', 'w+') as stateFile:
 			json.dump(theJson,stateFile )
 		stateFile.close()
-	 
-
+	def freezeExerciseWindow(self):
+		currentWindowsExercise = self.vBoxMain.get_children()[self.currentIndexExercise] 
+		currentWindowsExercise.exerciseInstance.disconnectEventBoxs()	
+	
 	def moveToExerciseIndex(self, indexExercise):
                 self.getLogger().debug("Inside to moveToExerciseIndex")
 		vBoxMain = self.vBoxMain

@@ -61,6 +61,10 @@ class SimpleAssociation():
 
 		return stateJson 
 	
+	def disconnectEventBoxs(self):
+		for index, eventBox in enumerate(self.allEventBoxs):
+                 	eventBox.disconnect(self.idHandlers[index])
+	
 		
 	
 	def getWindow(self, exercise, mainWindows, stateJson):
@@ -82,7 +86,9 @@ class SimpleAssociation():
 		frameExercises = gtk.Frame() 
 		
 		frameExercises.add(hBoxExercises)
-		
+	
+		self.idHandlers = []
+		self.allEventBoxs = []	
 		if stateJson is None:
 			self.optionsSelectionState = []
 			self.correspondencesSelectionState = []
@@ -120,7 +126,10 @@ class SimpleAssociation():
 			'''Options'''
 			self.mainWindows.getLogger().debug(option)
 			eventBoxOption = self.createEventBox(option['option']['value'], option['option']['type'])
-			eventBoxOption.connect("button-press-event", self.imageSelectedCallBack, self.vBoxCorrespondences)
+			idHandler = eventBoxOption.connect("button-press-event", self.imageSelectedCallBack, self.vBoxCorrespondences)
+			self.allEventBoxs.append(eventBoxOption)
+			self.idHandlers.append(idHandler)			
+
 			self.addEventBoxToVBox(eventBoxOption, self.vBoxOptions)			
 			if index == 0:
 				firstOptionEventBox = eventBoxOption
@@ -131,7 +140,10 @@ class SimpleAssociation():
 			eventBoxCorrespondence = ( self.createEventBox(self.correspondencesList[index]['correspondence']['value'],
 							self.correspondencesList[index]['correspondence']['type']) )
 			
-			eventBoxCorrespondence.connect("button_press_event", self.pairSelectedCallBack, self.vBoxOptions)
+			idHandler = eventBoxCorrespondence.connect("button_press_event", self.pairSelectedCallBack, self.vBoxOptions)
+			self.allEventBoxs.append(eventBoxCorrespondence)
+			self.idHandlers.append(idHandler)			
+
 			self.addEventBoxToVBox(eventBoxCorrespondence, self.vBoxCorrespondences)
 			if stateJson is None:
 				( self.correspondencesSelectionState.append( {"selected": -1,
