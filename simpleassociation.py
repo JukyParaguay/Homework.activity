@@ -13,6 +13,7 @@ import random
 
 from gettext import gettext as _
 
+import copy
 
 ''' Scales '''
 IMAGES_SCALE = [100, 100]
@@ -33,6 +34,11 @@ COLOURS_ASSOCIATION.append({"colour":"#D9E021", "available":True})
 COLOURS_ASSOCIATION.append({"colour":"#6FC72B", "available":True})
 
 COLOURS_ASSOCIATION.append({"colour":"#F1C001", "available":True})
+
+COLOURS_ASSOCIATION.append({"colour":"#F7931E", "available":True})
+
+COLOURS_ASSOCIATION.append({"colour":"#18B791", "available":True})
+
 
 EVENTBOX_SCALE = [100,100]
 
@@ -174,6 +180,7 @@ class SimpleAssociation():
 		if stateJson is not None:
 			self.repaintResumeItems()
 		else:
+			self.setAllAvailableSelectionColour()
 			self.selectFirtImage(firstOptionEventBox)	
 			
 		return windowSimpleAssociation
@@ -198,7 +205,9 @@ class SimpleAssociation():
 		self.fakeSelection(firstFrameOption)
 
 	def addEventBoxToVBox(self, eventBox, vBox):
-		frameEventBox = gtk.Frame() 
+		frameEventBox = gtk.EventBox()
+		frameEventBox.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color("white"))
+		eventBox.set_border_width(5)
 		frameEventBox.add(eventBox)
 		vBox.pack_start(frameEventBox, False,False,0)
 		
@@ -231,14 +240,25 @@ class SimpleAssociation():
 		frameImageSelected = firstEvenBox.get_parent()
 		self.fakeSelection(frameImageSelected)
 		
+		
 	def disorderCorrespondences(self, items):
 		
+		self.mainWindows.getLogger().debug("Inside to disorderCorrespondences")
 		optionsList = [None]*len(items)
 		correspondencesList = [None]*len(items)
 		
 		indexsList = range(len(items))
+		originalList = copy.copy(indexsList)
+		self.mainWindows.getLogger().debug(originalList)
+                self.mainWindows.getLogger().debug(indexsList)
 		random.shuffle(indexsList)
-	
+		while( originalList == indexsList and len(items) > 1):
+			self.mainWindows.getLogger().debug("Inside to while...")
+			random.shuffle(indexsList)
+		self.mainWindows.getLogger().debug(originalList)
+		self.mainWindows.getLogger().debug(indexsList)
+		
+
 		for index, item in enumerate(items):
 			optionsList[index] = {"option":{"type":item.option.type, "value":item.option.value}, \
 						"indexPair": indexsList[index]}
@@ -263,9 +283,12 @@ class SimpleAssociation():
 			colour['available'] = True
 			
 	def getAvailableSelectionColour(self):
+		response = None
 		for colour in self.COLOURS_ASSOCIATION:
 			if colour['available']:
-				return colour
+				response = colour
+				break
+		return response
 	
 	def setAvailableColour(self, colour):
 			
@@ -301,7 +324,6 @@ class SimpleAssociation():
 			self.fakeUnselection(framePairSelected)
 		
 		# Revisamos si la ultima imagen seleccionada no fue asociada
-		self.optionsSelectionState
 		if self.lastOptionSelected != -1 and self.optionsSelectionState[self.lastOptionSelected]['selected'] == -1:
 			
 			# No se ha asociado nada, volvemos a a poner a blanco el bg colour
@@ -318,11 +340,10 @@ class SimpleAssociation():
 			self.setSelectionStateColour(self.optionsSelectionState, indexImageSelected, colorAvailable)
 			
 		#cambiamos los colores de los bordes (frames) para notificar la seleccion
-		self.fakeSelection(frameImageSelected)
 		lastFrameImageSelected = allImagesFrames[self.lastOptionSelected]
-		self.fakeUnselection(lastFrameImageSelected)
-		self.fakeUnselection
-		
+		self.fakeUnselection(lastFrameImageSelected)	
+		self.fakeSelection(frameImageSelected)
+	
 		#Comprabamos la finalización del ejercicio
 		self.checkCompletedExercise()
 			
@@ -412,14 +433,16 @@ class SimpleAssociation():
 	
 	def fakeSelection(self, frame):
 		self.mainWindows.getLogger().debug(frame)
-		frame.modify_bg(gtk.STATE_NORMAL, SELECTED_COLOUR)
-	
+		frame.modify_bg(gtk.STATE_NORMAL, SELECTED_COLOUR)	
+		#self.mainWindows.getLogger().debug("get_style() : ")
+		#self.mainWindows.getLogger().debug(frame.get_style() )
+			
 	def fakeUnselection(self, frame):
-		frame.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color("white"))
-	
+		frame.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color("white"))	
+
 	def changeBackgroundColour(self, eventBox, colour):
-		eventBox.modify_bg(gtk.STATE_NORMAL,  gtk.gdk.Color(colour))
-		
+		eventBox.modify_bg(gtk.STATE_NORMAL,  gtk.gdk.Color(colour))		
+	
 	def setSelectionStateColour(self,selectionState, index, colour):
 		selectionState[index]['colour'] = colour
 		
